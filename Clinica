@@ -1,0 +1,65 @@
+import random
+
+dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]
+
+def crearMatriz():
+    turnos = [[0 for i in range(8)] for i in range(5)]
+    return turnos
+
+def menu():
+    turnos=crearMatriz()
+    print("Bienvenido a la clinica Hoggins.")
+    opcion = int(input("1- Asignar turno\n2- Ver turnos asignados\n3- Resumen del dia\n4- Salir: "))
+
+    while opcion != 4:
+        while opcion < 1 or opcion > 4:
+            opcion = int(input("ERROR. Ingrese una opcion correcta (1-4): "))
+
+        if opcion == 1:
+            cargaTurnos(turnos)
+
+        elif opcion == 2:
+            mostrarTurnos(turnos, dias)
+
+        elif opcion == 3:
+            print("Función de resumen todavía no implementada")
+
+        opcion = int(input("1- Asignar turno\n2- Ver turnos asignados\n3- Resumen del dia\n4- Salir: "))
+
+def cargaTurnos(turnos):
+    consul = int(input("Indique la especialidad en la que desea reservar un turno\n1- Nutricion (Lunes) \n2- Cardiologia (Martes) \n3- Pediatria (Miercoles) \n4- Neurologia (Jueves) \n5- Oftalmología (Viernes) \nSeleccione: "))
+    while consul<1 or consul>5:
+        consul = int(input("Consultorio invalido, Indique la especialidad en la que desea reservar un turno\n1- Nutricion (Lunes) \n2- Cardiologia (Martes) \n3- Pediatria (Miercoles) \n4- Neurologia (Jueves) \n5- Oftalmología (Viernes) \nSeleccione: "))    
+    hora = int(input("Ingrese hora (8-15): "))
+    while hora < 8 or hora > 15:
+        hora= int(input("ERROR. Ingrese una hora valida (8-15): "))
+
+    nombre=input("Ingrese su nombre completo: ")
+    dni= int(input("Ingrese su numero de DNI: "))
+    paciente_id = random.randint(1, 100)
+
+    if asignarTurnos(turnos, consul, hora, paciente_id):
+        print("Turno asignado correctamente.")
+    else:
+        print("Ese turno ya está ocupado.")
+        
+
+def asignarTurnos(turnos, consul, hora, paciente_id):
+    c, h = consul - 1, hora - 8
+    if turnos[c][h] == 0:
+        turnos[c][h] = paciente_id
+        return True
+    return False
+
+def mostrarTurnos(turnos, dias):
+    for c in range(5):
+        print("Consultorio ", c+1)
+        for h in range(8):
+            if turnos[c][h] != 0:
+                print("   Dia ", dias[c], "Hora ", h+8, ", numero de paciente:", turnos[c][h])
+
+def main():
+    menu()
+
+if __name__=="__main__":
+    main()
